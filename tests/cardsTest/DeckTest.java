@@ -3,9 +3,9 @@ package cardsTest;
 import cards.*;
 import org.junit.Before;
 import org.junit.Test;
+import utility.PresetDecks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class DeckTest {
     private Deck deck;
@@ -38,18 +38,29 @@ public class DeckTest {
         );
     }
     @Test
-    public void testGetCardsLef(){
+    public void testGetCardsLeft(){
         deck.removeCard();
         assertEquals(2,deck.getCardsLeft());
     }
 
     @Test
-    public void testLoadPresetDecks(){
+    public void testLoadPresetDeckElves(){
+        //Check if Elves deck is loaded, all cards have been assigned to Elves
         deck = Deck.loadPresetDeck(DeckFaction.ELVES);
         assertNotNull(deck);
         assertEquals(5, deck.getCardsLeft());
         for (Card card : deck) {
             assertEquals(DeckFaction.ELVES, card.getOwner().getFaction());
+        }
+    }
+    @Test
+    public void testLoadPresetDeckNull(){
+        //checks if no deck is provided, what exception is thrown
+        try{
+            Deck.loadPresetDeck(null);
+            fail("Expected IllegalArgumentException, but no exception was thrown.");
+        }catch (IllegalArgumentException e){
+            assertEquals("Faction can not be null", e.getMessage());
         }
     }
 }
